@@ -1,17 +1,12 @@
 #scrapy crawl simplifyem -o items.json -t json
-
 import time
-
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
-
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-
 import scrapy
 from scrapy import Request
-
 from scrapy.http import TextResponse 
 from scrapy.http import HtmlResponse 
 
@@ -23,7 +18,6 @@ class GreentechItem(scrapy.Item):
     email = scrapy.Field()
     website = scrapy.Field()
     address = scrapy.Field()
-
 
 class GreentechSpider(scrapy.Spider):
     name = "greentech"

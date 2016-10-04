@@ -1,9 +1,6 @@
 #scrapy crawl idoctors -o items.json -t json
-
-
 import scrapy
 from scrapy import Request
-
 
 class IdoctorsItem(scrapy.Item):
     # define the fields for your item here like:
@@ -14,7 +11,6 @@ class IdoctorsItem(scrapy.Item):
     specialization = scrapy.Field()
     photo_link = scrapy.Field()
     calendar = scrapy.Field()
-
 
 class IdoctorsSpider(scrapy.Spider):
     name = "idoctors"

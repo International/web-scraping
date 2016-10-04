@@ -1,5 +1,4 @@
 #scrapy crawl startupfinland -o items.json -t json
-
 import scrapy
 from scrapy import Request
 from scrapy.http import TextResponse 
@@ -11,9 +10,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
-
 from validate_email_address import validate_email
-
 
 class StartupfinlandItem(scrapy.Item):
     # define the fields for your item here like:
@@ -26,16 +23,13 @@ class StartupfinlandItem(scrapy.Item):
     validation = scrapy.Field()
     pass
 
-
 class StartupfinlandSpider(scrapy.Spider):
     name = "startupfinland"
     allowed_domains = ["funderbeam.com"]
     start_urls = ["https://www.funderbeam.com/startups?searchBio=0&hqLocations=FIN"]
 
-
     def __init__(self):
         self.driver = webdriver.Firefox()
-
 
     def parse(self, response):
         self.driver.get(response.url)
@@ -53,7 +47,6 @@ class StartupfinlandSpider(scrapy.Spider):
             url = response.urljoin(link.extract())
             yield scrapy.Request(url, self.parse_startup)
    
-
     def parse_startup(self, response):
         if response.xpath("//div[@class='description']//address/a[contains(@href,'mailto:')]/text()"):
             item = StartupfinlandItem()

@@ -2,7 +2,6 @@
 
 import scrapy
 
-
 class YellowpagesItem(scrapy.Item):
     # define the fields for your item here like:
     # name = scrapy.Field()
@@ -21,7 +20,6 @@ class YellowpagesItem(scrapy.Item):
     email = scrapy.Field()
     slogan = scrapy.Field()
 
-
 class YellowpagesSpider(scrapy.Spider):
     name = "yellowpages"
     allowed_domains = ["yellowpages.com"]
@@ -36,7 +34,6 @@ class YellowpagesSpider(scrapy.Spider):
         next_page=response.xpath("//div[@class='pagination']/ul/li/a[@class='next ajax-page']/@href")
         url = response.urljoin(next_page.extract_first())
         yield scrapy.Request(url, self.parse)
-
 
     def parse_company_info(self, response):
         item = YellowpagesItem()
@@ -55,5 +52,4 @@ class YellowpagesSpider(scrapy.Spider):
         item['website']=response.xpath("//div[@class='business-card-wrapper']//a[@class='custom-link']/@href").extract()
         item['email']=response.xpath("//div[@class='business-card-wrapper']//a[@class='email-business']/@href").extract()
         item['slogan']=response.xpath("//section[@id='business-details']/div[@class='slogan']/text()").extract()
-
         yield item
