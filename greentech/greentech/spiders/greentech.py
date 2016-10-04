@@ -1,6 +1,4 @@
 #scrapy crawl simplifyem -o items.json -t json
-#username : marc.spring@evolvedoffice.com
-#password : Comptiacrawl
 
 import time
 
@@ -27,7 +25,6 @@ class GreentechItem(scrapy.Item):
     address = scrapy.Field()
 
 
-
 class GreentechSpider(scrapy.Spider):
     name = "greentech"
     allowed_domains = ["greentech.nl"]
@@ -37,7 +34,6 @@ class GreentechSpider(scrapy.Spider):
 
     def __init__(self):
         self.driver = webdriver.Firefox()
-
 
     def parse(self, response):
         self.driver.get("http://www.greentech.nl/amsterdam/exhibitors/")
