@@ -4,6 +4,7 @@
 # Compiled source #
 ###################
 *.exe
+*.pyc
 
 # Scrapped data #
 ############
