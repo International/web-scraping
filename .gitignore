@@ -11,6 +11,8 @@
 *.xls
 *.json
 *.csv
+*.htm
+*.html
 
 
 # Packages #
