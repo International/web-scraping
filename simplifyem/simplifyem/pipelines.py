@@ -5,9 +5,7 @@
 # Don't forget to add your pipeline to the ITEM_PIPELINES setting
 # See: http://doc.scrapy.org/en/latest/topics/item-pipeline.html
 
-
 import xlsxwriter
-
 
 class SimplifyemPipeline(object):
     def __init__(self):
@@ -23,7 +21,6 @@ class SimplifyemPipeline(object):
         self.worksheet.write(0,6,"Descryption")
 
         self.line_counter=1
-
 
     def __del__(self):
         self.workbook.close()

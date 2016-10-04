@@ -19,10 +19,7 @@ class IoofPipeline(object):
         self.worksheet.write(0,2,"Phone")
         self.worksheet.write(0,3,"Website")
         self.worksheet.write(0,4,"url")
-
-
         self.line_counter=1
-
 
     def __del__(self):
         self.workbook.close()

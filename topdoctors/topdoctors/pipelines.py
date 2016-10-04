@@ -59,8 +59,6 @@ class TopdoctorsPipeline(object):
             except ValueError:
                 return False
     
-
-
         self.worksheet.write(self.line_counter,15,item['link'])
         self.worksheet.write(self.line_counter,0,item['prof'])
         self.worksheet.write(self.line_counter,1,item['name'])
@@ -74,7 +72,6 @@ class TopdoctorsPipeline(object):
         #Opinion
         self.worksheet.write(self.line_counter,14,' ')
         
-
     
         if '|' not in item['facility_direct']:
             street = item['facility_direct'].replace(item['facility_direct'].split('.')[-1],'') 

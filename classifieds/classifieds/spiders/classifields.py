@@ -18,11 +18,7 @@ class ClassifiedsSpider(scrapy.Spider):
     allowed_domains = ["classifieds.sunherald.com"]
     start_urls=["http://classifieds.sunherald.com/ms/biloxi-foreclosures/search"]
 
-
-
     def parse(self, response):
-
-
         for link in response.xpath("//div[@class='post-summary-title']/a/@href"):
             url = response.urljoin(link.extract())
             yield Request(url, callback=self.parse_info)
@@ -32,13 +28,10 @@ class ClassifiedsSpider(scrapy.Spider):
         url = response.urljoin(next_page.extract_first())
         yield Request(url, self.parse)
 
-
     def parse_info(self, response):
         item = ClassifiedsItem()
-        
         item['page_url'] = response.request.url
         item['text'] = response.xpath("//div[@class='details-ad-body']/text()").extract_first()
-
         yield item
 
 

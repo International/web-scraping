@@ -19,27 +19,16 @@ class IdoctorsItem(scrapy.Item):
 class IdoctorsSpider(scrapy.Spider):
     name = "idoctors"
     allowed_domains = ["idoctors.it"]
-    start_urls = [
-        "https://www.idoctors.it"
-    ]
-
+    start_urls = ["https://www.idoctors.it"]
 
     def parse(self, response):
         for link in response.xpath("//div[@id='home-medici-specialisti']//ul[@class='list-unstyled']//a/@href"):
             url = response.urljoin(link.extract())
-            print(url)
-
-            #url="https://www.idoctors.it/medici_specialisti/allergologia-1"
             yield Request(url, callback=self.parse_provinces)    
 
     def parse_provinces(self, response):
         for link in response.xpath("//div[contains(@class,'regioni-view')]//ul[@class='list-unstyled']//a/@href"):
             url = response.urljoin(link.extract())
-
-            #testing
-            #https://www.idoctors.it/attivita/12/228/81/1
-            #url = "https://www.idoctors.it/attivita/12/228/81/1"
-
             yield Request(url, callback=self.parse_element)      
         
     def parse_element(self, response):
@@ -54,15 +43,11 @@ class IdoctorsSpider(scrapy.Spider):
             yield Request(url, callback=self.parse_element) 
 
     def parse_doctor(self, response):
-        
         item = IdoctorsItem()
-
         item['link'] = response.request.url
         item['prof'] = response.xpath("//span[@class='nome-medico']/text()").extract_first().split()[0]
         item['name'] = (response.xpath("//span[@class='nome-medico']/text()").extract_first()).replace(item['prof'],'').strip()
         item['specialization'] = response.xpath("//h2[@class='specializzazione-medico']/text()").extract_first()
         item['photo_link'] = response.xpath("//img[contains(@class,'foto-medico')]/@src").extract_first()
         item['calendar'] = len(response.xpath("//div[@id='prest-top-acc-0']//ul[contains(@class,'prest-top')]/li").extract())
-        
-
         yield item

@@ -7,7 +7,6 @@
 
 import xlsxwriter
 
-
 class MantaPipeline(object):
     def __init__(self):
         self.workbook = xlsxwriter.Workbook('MantaCompanies.xlsx')
@@ -17,7 +16,6 @@ class MantaPipeline(object):
         self.worksheet.write(0,1,"Phone")
         self.worksheet.write(0,2,"Address")
         self.line_counter=1
-
 
     def __del__(self):
         self.workbook.close()

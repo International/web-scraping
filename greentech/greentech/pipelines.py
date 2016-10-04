@@ -17,9 +17,7 @@ class GreentechPipeline(object):
         self.worksheet.write(0,3,"Address")
         self.worksheet.write(0,4,"Link")
 
-
         self.line_counter=1
-
 
     def __del__(self):
         self.workbook.close()

@@ -13,23 +13,17 @@ class TurksandcaicosypItem(scrapy.Item):
     phone = scrapy.Field()
 
 
-
 class TurksandcaicosypSpider(scrapy.Spider):
     name = "turksandcaicosyp"
     allowed_domains = ["turksandcaicosyp.com"]
-    start_urls = [
-        "http://turksandcaicosyp.com/Turks-Caicos/Residential/A"
-    ]
-
+    start_urls = ["http://turksandcaicosyp.com/Turks-Caicos/Residential/A"]
 
     def parse(self, response):
-
         #string.ascii_lowercase - alphabet a-z
         #more information - help(string)
         for letter in list(string.ascii_lowercase):
             url = "http://turksandcaicosyp.com/Turks-Caicos/Residential/"+letter
             yield Request(url, callback=self.parse_page)  
-
 
     def parse_page(self, response):
         item = TurksandcaicosypItem()

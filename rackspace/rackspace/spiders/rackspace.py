@@ -1,4 +1,4 @@
-#scrapy crawl simplifyem -o items.json -t json
+#scrapy crawl rackspace -o items.json -t json
 
 
 import scrapy
@@ -18,9 +18,9 @@ class RackspaceItem(scrapy.Item):
 class RackspaceSpider(scrapy.Spider):
     name = "rackspace"
     allowed_domains = ["partners.rackspace.com"]
-    start_urls = [
-        #"http://partners.rackspace.com/directory/search?f0=Business+Type&f0v0=Digital+Agency&p=80"
-    ]
+    start_urls = []
+
+     #"http://partners.rackspace.com/directory/search?f0=Business+Type&f0v0=Digital+Agency&p=1"
     def start_requests(self):
         for page_number in range(0,81):
             url = "http://partners.rackspace.com/directory/search?f0=Business+Type&f0v0=Digital+Agency&p="+str(page_number)

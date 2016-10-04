@@ -65,9 +65,6 @@ DOWNLOAD_DELAY = 0
 
 # Configure item pipelines
 # See http://scrapy.readthedocs.org/en/latest/topics/item-pipeline.html
-#ITEM_PIPELINES = {
-#    'manta.pipelines.SomePipeline': 300,
-#}
 ITEM_PIPELINES = {
     'manta.pipelines.MantaPipeline': 300,
 }

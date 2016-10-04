@@ -47,6 +47,7 @@ class GreentechSpider(scrapy.Spider):
             self.driver.find_element_by_xpath("//div[@class='async-content']").send_keys(Keys.PAGE_DOWN)
             time.sleep(1)
 
+        #Get links
         for link in self.driver.find_elements_by_xpath("//div[@class='table-responsive']//tr/td[2]/a"):
             yield scrapy.Request(link.get_attribute("href"), self.parse_company)
 

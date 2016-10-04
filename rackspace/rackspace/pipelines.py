@@ -6,13 +6,11 @@
 # See: http://doc.scrapy.org/en/latest/topics/item-pipeline.html
 import xlsxwriter
 
-
 class RackspacePipeline(object):
     def __init__(self):
         self.workbook = xlsxwriter.Workbook('Rackspace.xlsx')
         self.worksheet = self.workbook.add_worksheet('Rackspace')
         
- 
         self.worksheet.write(0,0,"Company name")
         self.worksheet.write(0,1,"Address")
         self.worksheet.write(0,2,"Website")
@@ -21,7 +19,6 @@ class RackspacePipeline(object):
         self.worksheet.write(0,5,"Link")
 
         self.line_counter=1
-
 
     def __del__(self):
         self.workbook.close()

@@ -24,11 +24,15 @@ class MantaSpider(scrapy.Spider):
     allowed_domains = ["en.wikipedia.org"]
     start_urls = ["https://en.wikipedia.org"]
  
+    '''
+    manta.com using http://www.distilnetworks.com firewall 
+    that detects selenium and scrapy.
+    '''
+
     def parse(self, response):
-        files = os.listdir(path="F:\MyGitHub\Scraping\manta\manta\spiders\pages")
-
+        #Scrapping local html page
+        files = os.listdir(path="spiders\pages")
         for file in files:
-
             with open(os.path.join(os.getcwd(),"spiders","pages", file)) as page:
                 page_content = page.read()
                 response = HtmlResponse(url="MyHTML", body=page_content, encoding='utf-8')
@@ -40,6 +44,6 @@ class MantaSpider(scrapy.Spider):
                     if info_block.xpath(".//div[@itemprop='telephone']//text()"):
                         item['phone'] = (info_block.xpath(".//div[@itemprop='telephone']//text()").extract_first()).strip()
                     if info_block.xpath(".//div[@itemprop='address']//text()"):
-                        item['address'] = ' '.join([address.strip() for address in info_block.xpath(".//div[@itemprop='address']//text()").extract()])   
+                        item['address'] = ' '.join([address.strip() for address in info_block.xpath(".//div[@itemprop='address']//text()").extract()]) 
                     yield item
    

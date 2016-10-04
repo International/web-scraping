@@ -81,7 +81,8 @@ class IdoctorsSpider(scrapy.Spider):
         "http://www.topdoctors.it/specializzazione/Reumatologia",
         "http://www.topdoctors.it/specializzazione/scienze-dell-alimentazione",
         "http://www.topdoctors.it/specializzazione/terapia-del-dolore-especialidad",
-        "http://www.topdoctors.it/specializzazione/Urologia"]
+        "http://www.topdoctors.it/specializzazione/Urologia"
+        ]
 
         for url in urlist:
             yield Request(url, callback=self.parse_page) 
@@ -112,32 +113,27 @@ class IdoctorsSpider(scrapy.Spider):
         item['photo_link'] = response.urljoin(response.xpath("//div[@class='image_perfil_over']/a[1]/@href").extract_first())
         item['services'] = ''.join([elem.strip()+';' for elem in response.xpath("//div[@id='ficha_experto_en_doctor']//a/text()").extract()])
         item['about'] = ''.join(response.xpath("//div[@id='texto_primer_nivel_corto']//*/text()").extract())
-
         if response.xpath("//div[@id='top_articulos']//li[3]//span[@itemprop='title']"):
             item['spec'] = (response.xpath("//div[@id='top_articulos']//li[3]//span[@itemprop='title']/text()").extract_first()).strip() 
         else:
             item['spec'] = ''
-
         if response.xpath("//p[@id='num_colegiado']"):
             item['indentity_number'] = (response.xpath("//p[@id='num_colegiado']/text()").extract_first()).strip()
         else:
             item['indentity_number'] = ''
-
         if response.xpath("//div[@class='valor_comment']"):
             item['option'] = ''.join([elem.strip()+';' for elem in response.xpath("//div[@class='valor_comment']/text()").extract()])
         else:
             item['option'] = ''
-
+        
         if response.xpath("//div[@class='infomed_dr_view_right']/form"):
             item['calendar'] = len(response.xpath("//div[@class='infomed_dr_view_right']/form").extract())
-        
             #If exist calendar form and item_clinica
             if response.xpath("//div[@id='ficha_clinicas']/div[@class='item_clinica']"):
-                #Get popyp url
+                #Get popup url
                 url = response.xpath("//div[@id='ficha_clinicas']/div[@class='item_clinica']//a/@href").extract_first()
                 #Request information from popup
                 yield Request(url, callback=self.parse_popup, meta={'item': item})  
-
         else:
             item['calendar'] = ''
             item['facility_name'] = response.xpath("//p[@class='nombre_clinica negrita']/text()").extract_first()
