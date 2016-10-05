@@ -9,7 +9,7 @@ import sqlite3
 class TurksandcaicosypPipeline(object):
 
     def __init__(self):
-        self.conn = sqlite3.connect('Turksandcaicosyp.db')
+        self.conn = sqlite3.connect('Turksandcaicosyp.sqlite')
         self.cursor = self.conn.cursor()
 
         # Create teble
