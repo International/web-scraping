@@ -1,5 +1,4 @@
 #scrapy crawl turksandcaicosyp -o items.json -t json
-
 import string
 import scrapy
 from scrapy import Request
@@ -11,7 +10,6 @@ class TurksandcaicosypItem(scrapy.Item):
     name = scrapy.Field()
     area = scrapy.Field()
     phone = scrapy.Field()
-
 
 class TurksandcaicosypSpider(scrapy.Spider):
     name = "turksandcaicosyp"
@@ -29,15 +27,12 @@ class TurksandcaicosypSpider(scrapy.Spider):
         item = TurksandcaicosypItem()
 
         for info_block in response.xpath("//div[@class='listdiv']/div[@class='listbox']"):
-            item['name'] = info_block.xpath("div/div[4]/div[@class='lname']/text()").extract()
-            item['area'] = info_block.xpath("div/div[4]/text()").extract()
-            item['phone'] = info_block.xpath("div/div[4]/b/text()").extract()
+            item['name'] = info_block.xpath("div/div[4]/div[@class='lname']/text()").extract_first()
+            item['area'] = info_block.xpath("div/div[4]/text()").extract_first()
+            item['phone'] = info_block.xpath("div/div[4]/b/text()").extract_first()
             yield item
 
         #pagination
         next_page=response.xpath("//div[@class='listdiv']/a[contains(small/b/text(),'NEXT ')]/@href")
         url = response.urljoin(next_page.extract_first())
         yield Request(url, self.parse_page)
-
-
-       
