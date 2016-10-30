@@ -1,13 +1,20 @@
 #scrapy crawl yellowpagesau -o items.json -t json
+import string 
 
 import scrapy
 from scrapy import Request
 from scrapy.http import TextResponse 
+
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+
+'''
+Scrap from http://www.yellowpages.com.au
+Interesting: Scraping by Selenium 
+'''
 
 class YellowpagesauItem(scrapy.Item):
     # define the fields for your item here like:
@@ -18,13 +25,17 @@ class YellowpagesauItem(scrapy.Item):
     email = scrapy.Field()
     website = scrapy.Field() 
     address = scrapy.Field() 
-    pass
 
 class YellowpagesauSpider(scrapy.Spider):
     name = "yellowpagesau"
     allowed_domains = ["www.yellowpages.com.au"]
     start_urls = ["http://www.yellowpages.com.au"]
 
+    # Configure search
+    au_states = ["NSW","QLD","VIC","WA","SA","TAS","ACT","NT"]
+    au_clues = ["Real estate agent"]
+    au_codes = [2795]
+    
     def __init__(self):
         self.driver = webdriver.Chrome('spiders/chromedriver/chromedriver.exe')
 
@@ -34,23 +45,27 @@ class YellowpagesauSpider(scrapy.Spider):
         if len(self.driver.find_elements_by_xpath("//div[@class='form']//form[@name='captcha']"))>0:
             WebDriverWait(self.driver, 10000).until(EC.presence_of_element_located((By.XPATH,"//body[contains(@class, 'home-body')]")))
 
-        auStates=["NSW","QLD","VIC","WA","SA","TAS","ACT","NT"]
+        # urls generating
+        if self.au_codes:
+            urls = ["http://www.yellowpages.com.au/search/listings?clue={}&locationClue={}&selectedViewMode=list".format(clue.replace(' ','+'),str(code)) for clue, code in zip(self.au_clues, self.au_codes)]
+        else:
+            urls = ["http://www.yellowpages.com.au/search/listings?clue={}&state={}&selectedViewMode=list".format(clue.replace(' ','+'),state) for clue, state in zip(self.au_clues, self.au_states)]
 
-        for url in ["http://www.yellowpages.com.au/search/listings?clue=Caravan+Parks&locationClue=All+States&lat=&lon=&referredBy=www.yellowpages.com.au&selectedViewMode=list&eventType=refinement&state={}".format(state) for state in auStates]:
+        for url in urls:
             while True:
                 self.driver.get(url)
-                #Selenium page_source to scrapy response
+                # Selenium page_source to scrapy response
                 response = TextResponse(url=url, body=self.driver.page_source, encoding='utf-8')
 
-                for info_block in response.xpath("//div[contains(@class,'search-result')]//div[contains(@class,'in-area-cell')]"):
+                for elem in response.xpath("//div[contains(@class,'search-result')]//div[contains(@class,'in-area-cell')]"):
                     item = YellowpagesauItem()
                     item['page_url'] = response.url
-                    item['link'] = response.urljoin(info_block.xpath(".//a[@class='listing-name']/@href").extract_first()) 
-                    item['name'] = info_block.xpath(".//a[@class='listing-name']/text()").extract()
-                    item['phone'] = info_block.xpath(".//span[@class='contact-text']/text()").extract_first()
-                    item['email'] = info_block.xpath(".//a[contains(@class,'contact-email')]/@data-email").extract_first()
-                    item['website'] = info_block.xpath(".//a[contains(@class,'contact-url')]/@href").extract_first()
-                    item['address'] = info_block.xpath(".//p[contains(@class,'listing-address')]/text()").extract_first()
+                    item['link'] = response.urljoin(elem.xpath(".//a[@class='listing-name']/@href").extract_first()) 
+                    item['name'] = elem.xpath(".//a[@class='listing-name']/text()").extract_first()
+                    item['phone'] = elem.xpath(".//span[@class='contact-text']/text()").extract_first()
+                    item['email'] = elem.xpath(".//a[contains(@class,'contact-email')]/@data-email").extract_first()
+                    item['website'] = elem.xpath(".//a[contains(@class,'contact-url')]/@href").extract_first()
+                    item['address'] = elem.xpath(".//p[contains(@class,'listing-address')]/text()").extract_first()
                     yield item
 
                 #Selenium next page

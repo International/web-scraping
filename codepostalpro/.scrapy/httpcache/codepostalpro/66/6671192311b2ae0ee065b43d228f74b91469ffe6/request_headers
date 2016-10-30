@@ -1,0 +1,5 @@
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Encoding: gzip,deflate
+Referer: http://www.codepostalpro.com/tunisie/zaghouan/ennadhour.html
+User-Agent: Scrapy/1.1.0 (+http://scrapy.org)
+Accept-Language: en

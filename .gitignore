@@ -14,7 +14,7 @@
 *.csv
 *.htm
 *.html
-
+*.pdf
 
 # Packages #
 ############
@@ -34,6 +34,7 @@
 *.log
 *.sql
 *.sqlite
+
 
 # OS generated files #
 ######################
