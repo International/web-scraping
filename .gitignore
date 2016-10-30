@@ -6,6 +6,11 @@
 *.exe
 *.pyc
 
+
+# Scrapy cache #
+############
+.scrapy/*
+
 # Scrapped data #
 ############
 *.xlsx
