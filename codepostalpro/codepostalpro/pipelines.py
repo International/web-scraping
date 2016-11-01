@@ -8,7 +8,7 @@
 import xlsxwriter
 class xlsxPipeline(object):
 
-    def open_spider(self):
+    def open_spider(self, spider):
         self.workbook = xlsxwriter.Workbook('Codepostalpro.xlsx')
         self.worksheet = self.workbook.add_worksheet('Codepostalpro')
 
@@ -26,7 +26,7 @@ class xlsxPipeline(object):
 
         self.line_counter=1
 
-    def close_spider(self):
+    def close_spider(self, spider):
         self.workbook.close()
 
     def process_item(self, item, spider):
